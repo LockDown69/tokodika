@@ -1,0 +1,234 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Kategori</h1>
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahdata">
+    Tambah Data
+  </button>
+</div>
+
+<body>
+
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+    <?php foreach( $joinProduk->result() as $res ){ ?>
+    <div class="col">
+      <div class="card shadow-sm">
+        <!-- <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" preserveAspectRatio="xMidYMid slice" focusable="false"></svg> -->
+        <img class="card-img-top" width="100%" height="225"
+          src="<?php echo base_url()?>assets/img/<?php echo $res->product_image ?>">
+        <div class="card-body">
+          <p class="card-text">
+            <?php echo substr($res->product_description,0,128);?>
+          </p>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group">
+              <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                data-bs-target="#editdata<?php echo $res->product_id;?>">
+                Edit</button>
+              <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                data-bs-target="#hapusdata<?php echo $res->product_id;?>">
+                Hapus</button>
+            </div>
+            <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal"
+              data-bs-target="#viewdata<?php echo $res->product_id;?>">
+              View</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="hapusdata<?php echo $res->product_id; ?>" tabindex="-1"
+      aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Hapus Data</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+
+            <p>Apakah anda yakin ingin menghapus data produk <b>
+                <?php echo $res->product_name ?>
+              </b> ?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            <a class="btn btn-danger btn-rounded"
+              href="<?php echo base_url('produk/hapusProduk/'. $res->product_id) ?>">Hapus Data!!</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <?php echo form_open_multipart('produk/editProduct');?>
+    <div class="modal fade" id="editdata<?php echo $res->product_id;?>" tabindex="-1"
+      aria-labelledby="exampleModalCenteredScrollableTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenteredScrollableTitle">Modal Simpan</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+                          <input type="hidden" name="id" value="<?php echo $res->product_id; ?>" />
+          <div class="mb-3">
+            <label for="product_name" class="form-label">Nama Product</label>
+            <input type="text" class="form-control" id="product_name" name="product_name"
+              value="<?php echo $res->product_name?>">
+          </div>
+          <div class="mb-3">
+            <label for="category_id" class="form-label">Nama Kasir</label>
+            <select id="category_id" name="category_id" class="form-select">
+              <?php foreach ($getKategori ->result() as $kategori){
+                         if ($kategori->category_id== $res->category_id){
+                          echo "<option selected = 'selected' value='".$kategori->category_id."'>".$kategori->category_name."</option>";
+                         }else{
+                          echo "<option value='".$kategori->category_id."'>".$kategori->category_name."</option>";
+                         }
+                        }?>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="product_price" class="form-label">Harga Produk</label>
+            <input type="number" class="form-control" id="product_price" name="product_price"
+              value="<?php echo $res->product_price?>">
+          </div>
+          <div class="mb-3">
+            <label class="control-label">Deskripsi Produk</label>
+            <textarea name="product_description" rows="3"
+              class="form-control"><?php echo $res->product_description ?></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="" class="control-label">Foto Gambar</label><span class="red">*</span>
+            <input type="file" value="<?php echo base_url()?>assets/img/<?php echo $res->product_image;?>" name="product_image">
+          </div>
+          <div class="mb-3">
+                                    <img src="<?php echo base_url()?>assets/img/<?php echo $res->product_image;?>" width="150px" height="150px">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+          <button class="btn btn-primary">Simpan Perubahan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <?php echo form_close()?>
+
+  <?php } ?>
+
+
+
+  </div>
+  </div>
+
+
+  <?php echo form_open_multipart('produk/simpanProduct');?>
+  <div class="modal fade" id="tambahdata" tabindex="-1" aria-labelledby="exampleModalCenteredScrollableTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenteredScrollableTitle">Modal Simpan</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="product_name" class="form-label">Nama Product</label>
+            <input type="text" class="form-control" id="product_name" name="product_name">
+          </div>
+          <div class="mb-3">
+            <label for="category_id" class="form-label">Nama Kasir</label>
+            <select id="category_id" name="category_id" class="form-select">
+              <?php foreach ($getKategori ->result() as $kategori){?>
+              <option value="<?php echo $kategori->category_id;?>">
+                <?php echo $kategori->category_name; ?>
+              </option>
+              <?php
+              }
+              ?>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="product_price" class="form-label">Harga Produk</label>
+            <input type="number" class="form-control" id="product_price" name="product_price">
+          </div>
+          <div class="mb-3">
+            <label class="control-label">Deskripsi Produk</label>
+            <textarea name="product_description" rows="3" class="form-control"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="" class="control-label">Foto Gambar</label><span class="red">*</span>
+            <input type="file" name="product_image" id="userfile" onchange="tampilkanPreview(this,'preview')" />
+          </div>
+          <div class="mb-3">
+            <label for="" class="control-label">Preview Gambar Produk</label>
+            <img id="preview" width="150px" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+          <button class="btn btn-primary">Simpan Perubahan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <?php echo form_close()?>
+
+
+
+
+  <script type="text/javascript">
+
+
+    function tampilkanPreview(userfile, idpreview) {
+      var gb = userfile.files;
+      for (var i = 0; i < gb.length; i++) {
+        var gbPreview = gb[i];
+        var imageType = /image.*/;
+        var preview = document.getElementById(idpreview);
+        var reader = new FileReader();
+        if (gbPreview.type.match(imageType)) {
+          //jika tipe data sesuai
+          preview.file = gbPreview;
+          reader.onload = (function (element) {
+            return function (e) {
+              element.src = e.target.result;
+            };
+          })(preview);
+          //membaca data URL gambar
+          reader.readAsDataURL(gbPreview);
+        }
+        else {
+          //jika tipe data tidak sesuai
+          alert("Tipe file tidak sesuai. Gambar harus bertipe .png, .gif atau .jpg.");
+        }
+      }
+    }
+    function tampilkanPreview1(userfile, idpreview1) {
+      var gb = userfile.files;
+      for (var i = 0; i < gb.length; i++) {
+        var gbPreview1 = gb[i];
+        var imageType = /image.*/;
+        var preview1 = document.getElementById(idpreview1);
+        var reader = new FileReader();
+        if (gbPreview1.type.match(imageType)) {
+          //jika tipe data sesuai
+          preview1.file = gbPreview1;
+          reader.onload = (function (element) {
+            return function (e) {
+              element.src = e.target.result;
+            };
+          })(preview1);
+          //membaca data URL gambar
+          reader.readAsDataURL(gbPreview1);
+        }
+        else {
+          //jika tipe data tidak sesuai
+          alert("Tipe file tidak sesuai. Gambar harus bertipe .png, .gif atau .jpg.");
+        }
+      }
+    }
+  </script>
+
+</body>
+
+

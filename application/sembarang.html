@@ -1,0 +1,299 @@
+
+<div class="tab-base">
+<ul class="nav nav-tabs">
+    <li><div class="table-toolbar-right">
+        <button data-target="#tambahdata" data-toggle="modal" class="btn btn-success btn-rounded"><i class="fa fa-plus">&nbsp;Tambah Data</i></button>
+        </div></li>
+</ul>
+
+<td>
+<div class="row text-center" style="margin-top: 20px;">
+<?php foreach( $getBarang->result() as $res ){ ?>
+  <div class="col-md-4 pricing-featured">
+    <div class="panel" style="margin-top: 10px;">
+        <div class="pad-all bg-purple">
+          Nama Barang
+            <h4 class="mar-no text-light"><?php echo $res->nama_barang;  ?></h4>
+        </div>
+          <div class="list-group bg-trans text-left pad-btm">
+                            <!-- Deskripsi User -->
+                            <a class="list-group-item">
+                            <i class="ion-ios-home-outline icon-lg icon-fw"> </i><b> Merk Barang: </b>  <?php echo $res->merk_barang;  ?></a>
+                            <a class="list-group-item">
+                            <i class="ion-ios-telephone-outline icon-lg icon-fw"> </i><b> No.Rekening : </b><?php echo $res->jenis_barang; ?></a>
+                            <a class="list-group-item">
+                            <i class="ion-ios-information-outline icon-lg icon-fw"> </i><b> Status : </b> <?php echo $res->jenis_barang;  ?></a>
+                          </div>
+          <div class="panel-body">
+            <span>
+              <a data-toggle="modal" data-target="#demo-default-modal-edit-pajak<?php echo $res->id_barang;?>" class=" btn btn-warning btn-rounded">
+              <span class="fa fa-edit"></span>
+              &nbsp;Edit
+              </a>
+            </span>
+          <span>
+            <a data-toggle="modal" data-target="#modal-delete<?php echo $res->id_barang;?>" class=" btn btn-danger btn-rounded">
+            <span class="fa fa-trash"></span>
+            &nbsp;Hapus
+            </a>
+          </span>
+          <span>
+            <a data-toggle="modal" data-target="#modal-gambar<?php echo $res->id_barang;?>" class=" btn btn-primary btn-rounded">
+            <span class="fa fa-trash"></span>
+            &nbsp;Gambar Barang
+            </a>
+          </span>
+          </div>
+      </div>
+  </div>
+
+
+                    <form action="<?php echo site_url('barang/editDataBarang') ?>" method="post" enctype="multipart/form-data">
+                    <div class="modal" id="modal-update<?php echo $res->id_barang;?>" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+
+                      <!--Modal header-->
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal"><i class="pci-cross pci-circle"></i></button>
+                          <h4 class="modal-title">Edit Pajak</h4>
+                      </div>
+                      <input type="hidden" name="id" value="<?php echo $res->id_barang; ?>" />
+                      <!--Modal body-->
+                      <div class="panel-body">
+                        <div class="row">
+                          <div class="col-sm-12">
+                            <div class="form-group">
+                              <label class="control-label">Nama Barang</label>
+    					                    <textarea name="nama_barang" rows="3" class="form-control"><?php echo $res->nama_barang ?></textarea>
+                            </div>
+                          </div>
+                          </div>
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <div class="form-group">
+                              <label class="control-label">Merk Barang</label>
+                              <input type="text" class="form-control" value="<?php echo $res->merk_barang ?>" name="merk_barang">
+                            </div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="form-group">
+                              <label class="control-label">Jenis Barang</label>
+                              <input type="text" class="form-control" value="<?php echo $res->jenis_barang ?>" name="jenis_barang">
+                            </div>
+                          </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label class="control-label">Jenis Barang</label>
+                            <input type="text" class="form-control" value="<?php echo $res->jumlah ?>" name="jumlah">
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label for="" class="control-label">Foto Profile</label><span class="red">*</span>
+                            <input  type="file" name="gambar_barang" id="userfile" onchange="tampilkanPreview(this,'preview')"/>
+                          </div>
+                        </div>
+                        </div>
+                                                </div>
+
+                      <!--Modal footer-->
+                      <div class="modal-footer">
+                          <button data-dismiss="modal" class="btn btn-default btn-rounded" type="button">Tutup</button>
+                          <button class="btn btn-primary btn-rounded">Simpan Data</button>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                  </form>
+
+
+                <div class="modal" id="modal-delete<?php echo $res->id_barang;?>" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
+                                              <div class="modal-dialog ">
+                                                <div class="modal-content">
+                                                  <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal"><i class="pci-cross pci-circle"></i></button>
+                                                  </div>
+                                                  <div class="modal-body">
+
+                                                            <p>Apakah anda yakin ingin menghapus data list devisit 『<b><?php echo $res->nama_barang ?></b>』</p>
+                                                  </div>
+                                                  <div class="modal-footer">
+                                                            <button class="btn btn-default btn-rounded" data-dismiss="modal" type="button">Batal</button>
+                                                            <a class="btn btn-danger btn-rounded" href="<?php echo base_url('barang/hapusDataBarang/'. $res->id_barang) ?>">Hapus Data!!</a>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+
+
+                <?php } // end foreach ?>
+
+                </table>
+              </div>
+          </div>
+          <hr class="new-section-sm bord-no">
+      </div>
+  </div>
+
+
+
+<!-- Start Modal Tambah -->
+  <div class="panel panel-primary">
+<?php echo form_open_multipart('barang/simpanDataBarang');?>
+<div class="modal" id="tambahdata" role="dialog" tabindex="-1" aria-labelledby="demo-default-modal" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
+  <!--Modal header-->
+  <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal"><i class="pci-cross pci-circle"></i></button>
+      <h4 class="modal-title">Tambah Data</h4>
+  </div>
+  <div class="modal-heading">
+    <div class="modal-control">
+
+        <!--Nav tabs-->
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#tambah_data">Tambah Data</a></li>
+            <li><a data-toggle="tab" href="#tambah_gambar">Tambah Gambar</a></li>
+        </ul>
+
+    </div>
+  </div>
+
+  <!--Modal body-->
+  <div class="panel-body">
+  <div class="tab-content">
+    <div id="tambah_data" class="tab-pane fade in active">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="form-group">
+          <label class="control-label">Nama Barang</label>
+              <textarea name="nama_barang" rows="3" class="form-control"></textarea>
+        </div>
+      </div>
+      </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label class="control-label">Merk Barang</label>
+          <input type="text" class="form-control" name="merk_barang">
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label class="control-label">Jenis Barang</label>
+          <input type="text" class="form-control" name="jenis_barang">
+        </div>
+      </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="form-group">
+        <label class="control-label">Jumlah Barang</label>
+        <input type="number" class="form-control" name="jumlah">
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="form-group">
+        <label class="control-label">Gambar Barang</label>
+        <input type="number" class="form-control" name="gambar_barang">
+      </div>
+    </div>
+</div>
+</div>
+
+<div id="tambah_gambar" class="tab-pane fade in active">
+<div class="row">
+  <div class="col-sm-12">
+    <div class="form-group">
+      <label for="" class="control-label">Foto Profile</label><span class="red">*</span>
+      <input  type="file" name="gambar_barang" id="userfile" onchange="tampilkanPreview(this,'preview')"/>
+    </div>
+  </div>
+  </div>
+
+  </div>
+</div>
+</div>
+
+
+  <!--Modal footer-->
+  <div class="modal-footer">
+      <button data-dismiss="modal" class="btn btn-default btn-rounded" type="button">Close</button>
+      <button class="btn btn-primary btn-rounded">Save changes</button>
+  </div>
+</div>
+</div>
+</div>
+<?php echo form_close()?>
+</div>
+</div>
+
+<script type="text/javascript">
+
+
+function tampilkanPreview(userfile,idpreview)
+{
+  var gb = userfile.files;
+  for (var i = 0; i < gb.length; i++)
+  {
+    var gbPreview = gb[i];
+    var imageType = /image.*/;
+    var preview=document.getElementById(idpreview);
+    var reader = new FileReader();
+    if (gbPreview.type.match(imageType))
+    {
+      //jika tipe data sesuai
+      preview.file = gbPreview;
+      reader.onload = (function(element)
+      {
+        return function(e)
+        {
+          element.src = e.target.result;
+        };
+      })(preview);
+      //membaca data URL gambar
+      reader.readAsDataURL(gbPreview);
+    }
+      else
+      {
+        //jika tipe data tidak sesuai
+        alert("Tipe file tidak sesuai. Gambar harus bertipe .png, .gif atau .jpg.");
+      }
+  }
+}
+function tampilkanPreview1(userfile,idpreview1)
+{
+  var gb = userfile.files;
+  for (var i = 0; i < gb.length; i++)
+  {
+    var gbPreview1 = gb[i];
+    var imageType = /image.*/;
+    var preview1=document.getElementById(idpreview1);
+    var reader = new FileReader();
+    if (gbPreview1.type.match(imageType))
+    {
+      //jika tipe data sesuai
+      preview1.file = gbPreview1;
+      reader.onload = (function(element)
+      {
+        return function(e)
+        {
+          element.src = e.target.result;
+        };
+      })(preview1);
+      //membaca data URL gambar
+      reader.readAsDataURL(gbPreview1);
+    }
+      else
+      {
+        //jika tipe data tidak sesuai
+        alert("Tipe file tidak sesuai. Gambar harus bertipe .png, .gif atau .jpg.");
+      }
+  }
+}
+</script>
+<!-- End Modal Tambah -->

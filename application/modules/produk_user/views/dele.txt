@@ -1,0 +1,55 @@
+    <div class="row">
+      <?php foreach( $joinProduk->result() as $res ){ ?>
+      <div class="col-sm-6 col-lg-4 mb-4">
+        <div class="card">
+          <img class="card-img-top" width="100%" height="225"
+            src="<?php echo base_url()?>assets/img/<?php echo $res->product_image ?>">
+
+          <div class="card-body">
+            <h5 class="card-title">
+              <?php echo $res->product_name; ?>
+            </h5>
+            <p class="card-text">
+              <?php echo substr($res->product_description,0,128);?>
+            </p>
+            <p class="card-text"><button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal"
+                data-bs-target="#viewdata<?php echo $res->product_id;?>">
+                Data Lengkap</button></p>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="modal fade" id="viewdata<?php echo $res->product_id;?>" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="bd-example">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">
+                    <?= $res->category_name ?>
+                  </li>
+                  <li class="list-group-item">
+                    <?php echo number_format($res->product_price,2,',','.'); ?>
+                  </li>
+                  <li class="list-group-item">
+                    <?= $res->product_description; ?>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <?php } ?>
+    </div>
