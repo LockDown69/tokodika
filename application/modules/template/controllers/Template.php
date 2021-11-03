@@ -36,6 +36,12 @@ class Template extends MX_Controller {
 		$this->load->view('view_template_user',$data);
 	}
 
+	public function tampilRekomendasi($data)
+	{
+
+		$this->load->view('view_template_rekomendasi',$data);
+	}
+
 	
 
 

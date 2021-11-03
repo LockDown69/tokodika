@@ -46,6 +46,21 @@ class Produk_user extends MX_Controller {
 		echo Modules::run('template/tampilUser', $data);
 	}
 
+	function produkRekomendasiIndex()
+	{
+		// view
+		$data = array(
+			'namamodule' 	=> "produk_user",
+			'namafileview' 	=> "v_produk_index",
+
+			'getProduk'=> $this->M_produk_user->getProduk(),
+			'getKategori'=> $this->M_produk_user->getKategori(),
+			'getMerk'=> $this->M_produk_user->getMerk(),
+			'joinProdukRekomendasi'=> $this->M_produk_user->joinProdukRekomendasi(),
+		);
+		echo Modules::run('template/tampilRekomendasi', $data);
+	}
+
 
 	function cariProduk()
 	{
@@ -76,6 +91,22 @@ class Produk_user extends MX_Controller {
 		  'joinProdukRekomendasi'=> $this->M_produk_user->searchProdukRekomendasi(),
 	  );
 	  echo Modules::run('template/tampilUser', $data);
+
+}
+
+function cariRekomendasiIndex()
+{
+	// view
+	$data = array(
+		'namamodule' 	=> "produk_user",
+		'namafileview' 	=> "v_produk_index",
+
+		'getProduk'=> $this->M_produk_user->getProduk(),
+		'getKategori'=> $this->M_produk_user->getKategori(),
+		'getMerk'=> $this->M_produk_user->getMerk(),
+		'joinProdukRekomendasi'=> $this->M_produk_user->searchProdukRekomendasi(),
+	);
+	echo Modules::run('template/tampilRekomendasi', $data);
 
 }
 
